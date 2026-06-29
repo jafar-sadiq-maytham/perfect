@@ -25,29 +25,12 @@ def compute_stats(numbers: list[int]) -> dict:
     return stats
 
 
-@task(name="Publish Report")
-def publish_report(stats: dict) -> None:
-    create_markdown_artifact(
-        key="stats-report",
-        markdown=f"""# Stats Report
-
-| Metric | Value |
-|--------|-------|
-| Count  | {stats['count']} |
-| Total  | {stats['total']} |
-| Average| {stats['average']} |
-| Min    | {stats['min']} |
-| Max    | {stats['max']} |
-""",
-        description="Number stats",
-    )
 
 
 @flow(name="Simple Demo", log_prints=True)
 def simple_demo(count: int = 10):
     numbers = generate_numbers(count)
     stats = compute_stats(numbers)
-    publish_report(stats)
     print(f"Done! Average was {stats['average']}")
 
 
